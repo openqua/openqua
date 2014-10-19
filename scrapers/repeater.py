@@ -27,48 +27,21 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-from urllib2 import urlopen
-import csv
+class Repeater:
 
-from repeater import Repeater
+    def __init__(self, callsign):
+        self.callsign = callsign
 
-CSV_URL = "http://www.ukrepeater.net/csvcreate.php"
-
-# Format of CSV file is:
-#
-# * Callsign
-# * Band
-# * Channel
-# * TX Frequency
-# * RX Frequency
-# * Mode
-# * Maidenhead Locator
-# * Natural Language Location
-# * National Grid Reference
-# * Region
-# * CTCSS Tone
-# * Keeper Callsign
-# * Latitude
-# * Longitude
-#
-# The first line of the file is a header and should be discarded.
-# The fields are seperated by commas and quoted with double quotes.
-
-f = urlopen(CSV_URL)
-
-data = csv.reader(f, delimiter=',', quotechar='"')
-for row in data:
-    repeater = Repeater(row[0])
-    repeater.tx = row[3]
-    repeater.rx = row[4]
-    repeater.to = row[10]
-    repeater.mo = row[5]
-    repeater.ml = row[6]
-    repeater.lo = row[7]
-    repeater.ke = row[11]
-    repeater.lat = row[12]
-    repeater.lon = row[13]
-    repeater.prnt()
-
-f.close()
+    def prnt(self):
+        print "----------"
+        print "Callsign: %s" % (self.callsign,)
+        print "TX Frequency: %s" % (self.tx,)
+        print "RX Frequency: %s" % (self.rx,)
+        print "CTCSS Tone: %s" % (self.to,)
+        print "Mode: %s" % (self.mo,)
+        print "Maidenhead Locator: %s" % (self.ml,)
+        print "Natural Language Location: %s" % (self.lo,)
+        print "Repeater Keeper: %s" % (self.ke,)
+        print "Latitude: %s    Longitude: %s" % (self.lat, self.lon)
+        print "----------"
 
