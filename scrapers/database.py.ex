@@ -9,9 +9,9 @@ class Database:
                                       host='127.0.0.1', database='openqua')
 
     def insert(self, query, data):
-        cursor = cnx.cursor()
+        cursor = self.cnx.cursor()
         cursor.execute(query, data)
-        cnx.commit()
+        self.cnx.commit()
         cursor.close()
 
     def close(self):

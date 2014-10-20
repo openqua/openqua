@@ -56,8 +56,13 @@ CSV_URL = "http://www.ukrepeater.net/csvcreate.php"
 
 f = urlopen(CSV_URL)
 
+count = 0
+
 data = csv.reader(f, delimiter=',', quotechar='"')
 for row in data:
+    count += 1
+    if count == 1:
+        continue
     repeater = Repeater(row[0])
     repeater.tx = row[3]
     repeater.rx = row[4]
