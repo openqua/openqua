@@ -33,13 +33,22 @@ class Repeater:
 
     def __init__(self, callsign):
         self.callsign = callsign
+        self.tx = 0.0
+        self.rx = 0.0
+        self.to = 0.0
+        self.mo = ''
+        self.ml = ''
+        self.lo = ''
+        self.ke = ''
+        self.lat = ''
+        self.lon = ''
 
     def prnt(self):
         print "----------"
         print "Callsign: %s" % (self.callsign,)
-        print "TX Frequency: %s" % (self.tx,)
-        print "RX Frequency: %s" % (self.rx,)
-        print "CTCSS Tone: %s" % (self.to,)
+        print "TX Frequency: %f" % (self.tx,)
+        print "RX Frequency: %f" % (self.rx,)
+        print "CTCSS Tone: %f" % (self.to,)
         print "Mode: %s" % (self.mo,)
         print "Maidenhead Locator: %s" % (self.ml,)
         print "Natural Language Location: %s" % (self.lo,)
