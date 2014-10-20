@@ -75,6 +75,6 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
             # TODO Add baudrate from repeater_info[5]
         repeater.ml = repeater_info[4]
         repeater.lo = repeater_info[1]
-        repeater.prnt()
+        print(repeater)
         repeater.insert()
     i += 1

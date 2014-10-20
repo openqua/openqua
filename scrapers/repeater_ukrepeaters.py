@@ -74,7 +74,7 @@ for row in data:
     repeater.ke = row[11]
     repeater.lat = row[12]
     repeater.lon = row[13]
-    repeater.prnt()
+    print(repeater)
     repeater.insert()
 
 f.close()

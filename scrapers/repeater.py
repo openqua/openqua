@@ -43,18 +43,18 @@ class Repeater:
         self.lat = ''
         self.lon = ''
 
-    def prnt(self):
-        print "----------"
-        print "Callsign: %s" % (self.callsign,)
-        print "TX Frequency: %f" % (self.tx,)
-        print "RX Frequency: %f" % (self.rx,)
-        print "CTCSS Tone: %f" % (self.to,)
-        print "Mode: %s" % (self.mo,)
-        print "Maidenhead Locator: %s" % (self.ml,)
-        print "Natural Language Location: %s" % (self.lo,)
-        print "Repeater Keeper: %s" % (self.ke,)
-        print "Latitude: %s    Longitude: %s" % (self.lat, self.lon)
-        print "----------"
+    def __str__(self):
+        return "----------\n" + \
+        "Callsign: {}\n".format(self.callsign,) + \
+        "TX Frequency: {}\n".format(self.tx,) + \
+        "RX Frequency: {}\n".format(self.rx,) + \
+        "CTCSS Tone: {}\n".format(self.to,) + \
+        "Mode: {}\n".format(self.mo,) + \
+        "Maidenhead Locator: {}\n".format(self.ml,) + \
+        "Natural Language Location: {}\n".format(self.lo,) + \
+        "Repeater Keeper: {}\n".format(self.ke,) + \
+        "Latitude: {}    Longitude: {}\n".format(self.lat, self.lon) + \
+        "----------"
 
     def mysql(self):
         query = "REPLACE INTO repeater " \
