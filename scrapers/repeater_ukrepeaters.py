@@ -69,6 +69,7 @@ for row in data:
     repeater.lat = row[12]
     repeater.lon = row[13]
     repeater.prnt()
+    repeater.insert()
 
 f.close()
 

@@ -45,3 +45,15 @@ class Repeater:
         print "Latitude: %s    Longitude: %s" % (self.lat, self.lon)
         print "----------"
 
+    def mysql(self):
+        query = "INSERT INTO repeater VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
+        data = (self.callsign, self.tx, self.rx, self.to, self.mo, self.ml, self.lo, self.ke, self.lat, self.lon)
+        return (query, data)
+
+    def insert(self):
+        db = Database()
+        query, data = self.mysql()
+        db.insert(query, data)
+        db.close()
+
+
