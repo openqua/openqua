@@ -27,6 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+import re, subprocess
 from flask import Flask, jsonify
 app = Flask(__name__)
 
@@ -34,10 +35,25 @@ app = Flask(__name__)
 def hello():
     return "OpenQUA!"
 
+def get_dxcc(callsign):
+    callsign = callsign.upper()
+    detail = {'callsign': callsign}
+    callsign = re.sub("[^A-Z0-9]", "", callsign)
+    p = subprocess.Popen(['dxcc', callsign], stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    lines = out.split("\n")
+    detail['dxcc'] = re.sub("^Country Name:", "", lines[3]).strip()
+    detail['waz'] = re.sub("^WAZ Zone:", "", lines[4]).strip()
+    detail['itu'] = re.sub("^ITU Zone:", "", lines[5]).strip()
+    detail['continent'] = re.sub("^Continent:", "", lines[6]).strip()
+    detail['lat'] = re.sub("^Latitude:", "", lines[7]).strip()
+    detail['lon'] = re.sub("^Longitude:", "", lines[8]).strip()
+    detail['utcshift'] = re.sub("^UTC shift:", "", lines[9]).strip()
+    return detail
+
 @app.route("/j/<callsign>")
 def callsign_detail_json(callsign):
-    detail = {'callsign': callsign}
-    # TODO Get DXCC data from dxcc
+    detail = get_dxcc(callsign)
     # TODO Get repeater data from database
     # TODO Get beacon data from database
     # TODO Get APRS-IS data from APRS-IS
@@ -45,5 +61,5 @@ def callsign_detail_json(callsign):
     return jsonify(detail)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
 
