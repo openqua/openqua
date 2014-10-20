@@ -46,7 +46,8 @@ class Repeater:
         print "----------"
 
     def mysql(self):
-        query = "INSERT INTO repeater VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
+        query = "REPLACE INTO repeater "
+                "VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
         data = (self.callsign, self.tx, self.rx, self.to, self.mo, self.ml, self.lo, self.ke, self.lat, self.lon)
         return (query, data)
 
