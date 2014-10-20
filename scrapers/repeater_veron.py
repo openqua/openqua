@@ -1,7 +1,8 @@
+#!/bin/env python2
 
 # This file is part of OpenQUA.
 # 
-# Copyright (c) 2014 Iain R. Learmonth and contributors. All rights reserved.
+# Copyright (c) 2014 Derecho and contributors. All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -27,36 +28,39 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-from database import Database
+import urllib2
+from bs4 import BeautifulSoup
 
-class Repeater:
+veron_data = urllib2.urlopen("http://www.veron.nl/naslag/naslag_repeaters.html").read()
+veron_soup = BeautifulSoup(veron_data)
 
-    def __init__(self, callsign):
-        self.callsign = callsign
+# We're skipping the last block as it lists external resources and isn't
+# actually a table with repeater information.
+repeater_category_titles = [
+            repeater_category_title.next_element.strip()
+            for repeater_category_title
+            in veron_soup.find_all(class_="tekstbloktitel")
+        ][:-1]
 
-    def prnt(self):
-        print "----------"
-        print "Callsign: %s" % (self.callsign,)
-        print "TX Frequency: %s" % (self.tx,)
-        print "RX Frequency: %s" % (self.rx,)
-        print "CTCSS Tone: %s" % (self.to,)
-        print "Mode: %s" % (self.mo,)
-        print "Maidenhead Locator: %s" % (self.ml,)
-        print "Natural Language Location: %s" % (self.lo,)
-        print "Repeater Keeper: %s" % (self.ke,)
-        print "Latitude: %s    Longitude: %s" % (self.lat, self.lon)
-        print "----------"
+# TODO Remove
+for x in repeater_category_titles:
+    print(x)
 
-    def mysql(self):
-        query = "REPLACE INTO repeater "
-                "VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
-        data = (self.callsign, self.tx, self.rx, self.to, self.mo, self.ml, self.lo, self.ke, self.lat, self.lon)
-        return (query, data)
+for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
+    for row in repeater_category.find_all("tr"):
+        if row.find("th"):
+            continue
 
-    def insert(self):
-        db = Database()
-        query, data = self.mysql()
-        db.insert(query, data)
-        db.close()
+        repeater_info = [
+                    cell.next_element.strip()
+                    for cell
+                    in row.find_all("td")
+                ]
+        
+        # TODO Remove
+        for x in repeater_info:
+            print(x)
+        print('')
 
-
+        # TODO Create Repeater object with right info. Use
+        # repeater_category_titles for band and type.
