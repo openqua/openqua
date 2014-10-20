@@ -64,9 +64,10 @@ for row in data:
     if count == 1:
         continue
     repeater = Repeater(row[0])
-    repeater.tx = row[3]
-    repeater.rx = row[4]
-    repeater.to = row[10]
+    repeater.tx = float(row[3])
+    repeater.rx = float(row[4])
+    if row[10] != '':
+        repeater.to = float(row[10])
     repeater.mo = row[5]
     repeater.ml = row[6]
     repeater.lo = row[7]
