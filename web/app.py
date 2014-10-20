@@ -27,36 +27,23 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-from database import Database
+from flask import Flask, jsonify
+app = Flask(__name__)
 
-class Repeater:
+@app.route("/")
+def hello():
+    return "OpenQUA!"
 
-    def __init__(self, callsign):
-        self.callsign = callsign
+@app.route("/j/<callsign>")
+def callsign_detail_json(callsign):
+    detail = {'callsign': callsign}
+    # TODO Get DXCC data from dxcc
+    # TODO Get repeater data from database
+    # TODO Get beacon data from database
+    # TODO Get APRS-IS data from APRS-IS
+    # TODO Get Echolink data from database
+    return jsonify(detail)
 
-    def prnt(self):
-        print "----------"
-        print "Callsign: %s" % (self.callsign,)
-        print "TX Frequency: %s" % (self.tx,)
-        print "RX Frequency: %s" % (self.rx,)
-        print "CTCSS Tone: %s" % (self.to,)
-        print "Mode: %s" % (self.mo,)
-        print "Maidenhead Locator: %s" % (self.ml,)
-        print "Natural Language Location: %s" % (self.lo,)
-        print "Repeater Keeper: %s" % (self.ke,)
-        print "Latitude: %s    Longitude: %s" % (self.lat, self.lon)
-        print "----------"
-
-    def mysql(self):
-        query = "REPLACE INTO repeater " \
-                "VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
-        data = (self.callsign, self.tx, self.rx, self.to, self.mo, self.ml, self.lo, self.ke, self.lat, self.lon)
-        return (query, data)
-
-    def insert(self):
-        db = Database()
-        query, data = self.mysql()
-        db.insert(query, data)
-        db.close()
-
+if __name__ == "__main__":
+    app.run()
 
