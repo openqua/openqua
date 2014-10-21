@@ -67,15 +67,23 @@ for row in data:
     repeater.tx = float(row[3])
     repeater.rx = float(row[4])
     if row[10] != '':
-        repeater.to = float(row[10])
-    repeater.mo = row[5]
-    repeater.ml = row[6]
-    repeater.lo = row[7]
-    repeater.ke = row[11]
+        repeater.ctcss = float(row[10])
+    if row[5] == "AV":
+        repeater.mode = "FMVOICE"
+    if row[5] == "DSTAR":
+        repeater.mode = "D-STAR"
+    if row[5] == "DMR":
+        repeater.mode = "DMR"
+    if row[5] == "DUALMODE":
+        repeater.mode = "FMVOICE"
+    repeater.locator = row[6]
+    repeater.town = row[7]
+    repeater.keeper = row[11]
     repeater.lat = row[12]
     repeater.lon = row[13]
+    repeater.source = "http://ukrepeater.net/"
     print(repeater)
-    repeater.insert()
+    repeater.update()
 
 f.close()
 
