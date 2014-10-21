@@ -27,9 +27,11 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+from database import Database
 import re, subprocess
 from flask import Flask, jsonify
 app = Flask(__name__)
+db = Database()
 
 @app.route("/")
 def hello():
@@ -51,10 +53,27 @@ def get_dxcc(callsign):
     detail['utcshift'] = re.sub("^UTC shift:", "", lines[9]).strip()
     return detail
 
+def add_repeater_detail(callsign, detail):
+    repeater = db.get_repeater(callsign.upper())
+    if repeater == None:
+        return detail
+    detail['repeater'] = {
+            'tx': repeater['tx'],
+            'rx': repeater['rx'],
+            'tone': repeater['to'],
+            'mode': repeater['mo'],
+            'keeper': repeater['ke']
+            }
+    detail['lat'] = repeater['lat']
+    detail['lon'] = repeater['lon']
+    detail['locator'] = repeater['ml']
+    detail['town'] = repeater['lo']
+    return detail
+
 @app.route("/j/<callsign>")
 def callsign_detail_json(callsign):
     detail = get_dxcc(callsign)
-    # TODO Get repeater data from database
+    detail = add_repeater_detail(callsign, detail)
     # TODO Get beacon data from database
     # TODO Get APRS-IS data from APRS-IS
     # TODO Get Echolink data from database

@@ -55,3 +55,4 @@ target/
 
 # Files with passwords
 scrapers/database.py
+web/database.py
