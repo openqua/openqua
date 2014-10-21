@@ -31,6 +31,8 @@
 import urllib2
 from bs4 import BeautifulSoup
 
+from repeater import Repeater
+
 veron_data = urllib2.urlopen("http://www.veron.nl/naslag/naslag_repeaters.html").read()
 veron_soup = BeautifulSoup(veron_data)
 
@@ -42,10 +44,7 @@ repeater_category_titles = [
             in veron_soup.find_all(class_="tekstbloktitel")
         ][:-1]
 
-# TODO Remove
-for x in repeater_category_titles:
-    print(x)
-
+i = 0
 for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
     for row in repeater_category.find_all("tr"):
         if row.find("th"):
@@ -56,11 +55,26 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
                     for cell
                     in row.find_all("td")
                 ]
-        
-        # TODO Remove
-        for x in repeater_info:
-            print(x)
-        print('')
+        repeater_category_title = repeater_category_titles[i]
+        # TODO Handle rowspan!
+        # Currently causes the script to miss a few stations
+        if len(repeater_info) != 6:
+            continue
 
-        # TODO Create Repeater object with right info. Use
-        # repeater_category_titles for band and type.
+        repeater = Repeater(repeater_info[0])
+        repeater.tx = float(repeater_info[3].replace(',', '.'))
+        repeater.rx = float(repeater_info[2].replace(',', '.'))
+        if "FM" in repeater_category_title:
+            if repeater_info[5] != '-':
+                repeater.to = float(repeater_info[5].replace(',', '.'))
+            repeater.mo = "FM"
+        elif "D-Star" in repeater_category_title:
+            repeater.mo = "D-Star"
+        elif "Packetradio" in repeater_category_title:
+            repeater.mo = "Packetradio"
+            # TODO Add baudrate from repeater_info[5]
+        repeater.ml = repeater_info[4]
+        repeater.lo = repeater_info[1]
+        print(repeater)
+        repeater.insert()
+    i += 1
