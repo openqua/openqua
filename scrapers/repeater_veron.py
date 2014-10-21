@@ -49,6 +49,7 @@ repeater_category_titles = [
         ][:-1]
 
 i = 0
+previous_repeater_info = None
 for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
     for row in repeater_category.find_all("tr"):
         if row.find("th"):
@@ -60,9 +61,18 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
                     in row.find_all("td")
                 ]
         repeater_category_title = repeater_category_titles[i]
-        # TODO Handle rowspan!
-        # Currently causes the script to miss a few stations
-        if len(repeater_info) != 6:
+
+        # Some entries reuse values from the previous row
+        if len(repeater_info) == 3:
+            fixed_repeater_info = [repeater_info[0]]
+            fixed_repeater_info += [previous_repeater_info[1]]
+            fixed_repeater_info += [repeater_info[1]]
+            fixed_repeater_info += [repeater_info[2]]
+            fixed_repeater_info += [previous_repeater_info[4]]
+            fixed_repeater_info += [previous_repeater_info[5]]
+            repeater_info = fixed_repeater_info
+        elif len(repeater_info) != 6:
+            # Shouldn't happen, but better not crash.
             continue
 
         repeater = Repeater(repeater_info[0])
@@ -87,6 +97,8 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
             time.sleep(2)
         else:
             repeater.lat, repeater.lon = locator_to_latlong(repeater.ml)
+
         print(repeater)
         repeater.insert()
+        previous_repeater_info = repeater_info
     i += 1
