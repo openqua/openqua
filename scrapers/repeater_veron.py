@@ -75,30 +75,31 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
             # Shouldn't happen, but better not crash.
             continue
 
-        repeater = Repeater(repeater_info[0])
+        repeater = Repeater(repeater_info[0].replace(' ', '-'))
         repeater.tx = float(repeater_info[3].replace(',', '.'))
         repeater.rx = float(repeater_info[2].replace(',', '.'))
         if "FM" in repeater_category_title:
             if repeater_info[5] != '-':
-                repeater.to = float(repeater_info[5].replace(',', '.'))
-            repeater.mo = "FM"
+                repeater.ctcss = float(repeater_info[5].replace(',', '.'))
+            repeater.mode = "FM"
         elif "D-Star" in repeater_category_title:
-            repeater.mo = "D-Star"
+            repeater.mode = "D-Star"
         elif "Packetradio" in repeater_category_title:
-            repeater.mo = "Packetradio"
+            repeater.mode = "Packetradio"
             # TODO Add baudrate from repeater_info[5]
-        repeater.ml = repeater_info[4]
-        repeater.lo = repeater_info[1]
-        if repeater.ml == "?":
-            location = geolocator.geocode(repeater.lo + " Netherlands", timeout=10)
+        repeater.locator = repeater_info[4]
+        repeater.town = repeater_info[1]
+        if repeater.locator == "?":
+            location = geolocator.geocode(repeater.town + " Netherlands", timeout=10)
             repeater.lat = location.latitude
             repeater.lon = location.longitude
-            repeater.ml = latlong_to_locator(repeater.lat, repeater.lon)
+            repeater.locator = latlong_to_locator(repeater.lat, repeater.lon)
             time.sleep(2)
         else:
-            repeater.lat, repeater.lon = locator_to_latlong(repeater.ml)
+            repeater.lat, repeater.lon = locator_to_latlong(repeater.locator)
+        repeater.source = "http://www.veron.nl/"
 
         print(repeater)
-        repeater.insert()
+        repeater.update()
         previous_repeater_info = repeater_info
     i += 1
