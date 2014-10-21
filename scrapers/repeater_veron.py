@@ -28,13 +28,17 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import urllib2
+import urllib2, time
 from bs4 import BeautifulSoup
+from geopy.geocoders import Nominatim
+from pyhamtools.locator import locator_to_latlong, latlong_to_locator
 
 from repeater import Repeater
 
 veron_data = urllib2.urlopen("http://www.veron.nl/naslag/naslag_repeaters.html").read()
 veron_soup = BeautifulSoup(veron_data)
+
+geolocator = Nominatim()
 
 # We're skipping the last block as it lists external resources and isn't
 # actually a table with repeater information.
@@ -75,6 +79,14 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
             # TODO Add baudrate from repeater_info[5]
         repeater.ml = repeater_info[4]
         repeater.lo = repeater_info[1]
+        if repeater.ml == "?":
+            location = geolocator.geocode(repeater.lo + " Netherlands", timeout=10)
+            repeater.lat = location.latitude
+            repeater.lon = location.longitude
+            repeater.ml = latlong_to_locator(repeater.lat, repeater.lon)
+            time.sleep(2)
+        else:
+            repeater.lat, repeater.lon = locator_to_latlong(repeater.ml)
         print(repeater)
         repeater.insert()
     i += 1
