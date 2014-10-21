@@ -32,40 +32,52 @@ from database import Database
 class Repeater:
 
     def __init__(self, callsign):
-        self.callsign = callsign
-        self.tx = 0.0
-        self.rx = 0.0
-        self.to = 0.0
-        self.mo = ''
-        self.ml = ''
-        self.lo = ''
-        self.ke = ''
-        self.lat = ''
-        self.lon = ''
+        ident = callsign.split('-')
+        if len(ident) == 1:
+            self.callsign = callsign
+            self.ssid = 1
+        else:
+            self.callsign = ident[0]
+            self.ssid = ident[1]
+        self.keeper = None
+        self.mode = "FMVOICE"
+        self.tx = 0
+        self.rx = 0
+        self.carrier = False
+        self.burst = False
+        self.ctcss = 0
+        self.dcs = 0
+        self.town = ""
+        self.ml = ""
+        self.source = "http://www.example.com/"
 
     def __str__(self):
         return "----------\n" + \
         "Callsign: {}\n".format(self.callsign,) + \
+        "Repeater Keeper: {}\n".format(self.keeper,) + \
+        "SSID: {}\n".format(self.ssid,) + \
+        "Mode: {}\n".format(self.mode,) + \
         "TX Frequency: {}\n".format(self.tx,) + \
         "RX Frequency: {}\n".format(self.rx,) + \
-        "CTCSS Tone: {}\n".format(self.to,) + \
-        "Mode: {}\n".format(self.mo,) + \
-        "Maidenhead Locator: {}\n".format(self.ml,) + \
-        "Natural Language Location: {}\n".format(self.lo,) + \
-        "Repeater Keeper: {}\n".format(self.ke,) + \
+        "Carrier Activation: {}\n".format(self.carrier,) + \
+        "1750Hz Burst Tone Activation: {}\n".format(self.burst,) + \
+        "CTCSS Tone: {}\n".format(self.ctcss,) + \
+        "DCS Tone: {}\n".format(self.dcs,) + \
+        "Town: {}\n".format(self.town,) + \
+        "Maidenhead Locator: {}\n".format(self.locator,) + \
         "Latitude: {}    Longitude: {}\n".format(self.lat, self.lon) + \
+        "Source: {}\n".format(self.source,) + \
         "----------"
 
-    def mysql(self):
-        query = "REPLACE INTO repeater " \
-                "VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s );"
-        data = (self.callsign, self.tx, self.rx, self.to, self.mo, self.ml, self.lo, self.ke, self.lat, self.lon)
-        return (query, data)
-
-    def insert(self):
+    def update(self):
         db = Database()
-        query, data = self.mysql()
+        query = "REPLACE INTO station " \
+                "VALUES ( %s, NULL, %s, NULL, %s );"
+        data = (self.callsign, self.keeper, self.source)
+        db.insert(query, data)
+        query = "REPLACE INTO station_repeater " \
+                "VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NULL, %s );"
+        data = (self.callsign, self.ssid, self.mode, self.tx, self.rx, self.carrier, self.burst, self.ctcss, self.dcs, self.town, self.locator, self.lat, self.lon, self.source)
         db.insert(query, data)
         db.close()
-
 
