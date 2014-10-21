@@ -29,7 +29,7 @@
 
 from database import Database
 import re, subprocess
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 app = Flask(__name__)
 db = Database()
 
@@ -78,6 +78,11 @@ def callsign_detail_json(callsign):
     # TODO Get APRS-IS data from APRS-IS
     # TODO Get Echolink data from database
     return jsonify(detail)
+
+@app.route("/repeaters")
+def repeaters_map():
+    db = Database()
+    return render_template("repeaters.html", repeaters = db.get_all_repeaters())
 
 if __name__ == "__main__":
     app.run(debug=True)
