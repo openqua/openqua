@@ -55,16 +55,23 @@ for row in repeater_rows:
         continue # we get these anyway from ukrepeater
     repeater.rx = fields[1].next_element.next_element.next_element.strip()
     repeater.tx = fields[1].next_element.next_element.next_element.next_element.next_element.next_element.next_element.strip()
-    repeater.to = re.sub("\/", "", fields[3].next_element.strip())
-    repeater.mo = "AV"
-    repeater.lo = fields[4].next_element.strip()
-    location = geolocator.geocode(re.sub(",.*$", "", repeater.lo) + ", Republic of Ireland", timeout=10)
+    activation = re.sub("\/", "", fields[3].next_element.strip())
+    if activation == "Carrier":
+        repeater.carrier = True
+    elif activation == "1750Hz":
+        repeater.burst = True
+    else:
+        repeater.ctcss = re.sub("Hz", "", activation)
+    repeater.mode = "FMVOICE"
+    repeater.town = fields[4].next_element.strip()
+    location = geolocator.geocode(re.sub(",.*$", "", repeater.town) + ", Republic of Ireland", timeout=10)
     if location == None:
         continue # TODO need to get a better geocoding system, or actually pull out the ml
     repeater.lat = location.latitude                                     
     repeater.lon = location.longitude                                    
-    repeater.ml = latlong_to_locator(repeater.lat, repeater.lon)
+    repeater.locator = latlong_to_locator(repeater.lat, repeater.lon)
     time.sleep(2)
-    repeater.insert()
+    repeater.source = "http://www.irts.ie/"
     print repeater
+    repeater.update()
 
