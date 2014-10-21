@@ -5,7 +5,7 @@
     map = new OpenLayers.Map("mapdiv");
     map.addLayer(new OpenLayers.Layer.OSM());
  
-    var zoom=16;
+    var zoom=5;
  
     var markers = new OpenLayers.Layer.Markers( "Markers" );
     map.addLayer(markers);
@@ -21,6 +21,12 @@
     markers.addMarker(new OpenLayers.Marker(lonLat));
 
     {% endfor %}
+
+    var lonLat = new OpenLayers.LonLat( -3, 55 )
+          .transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          ); 
  
     map.setCenter (lonLat, zoom);
   </script>
