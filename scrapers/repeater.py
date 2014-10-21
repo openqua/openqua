@@ -48,7 +48,7 @@ class Repeater:
         self.ctcss = 0
         self.dcs = 0
         self.town = ""
-        self.ml = ""
+        self.locator = ""
         self.source = "http://www.example.com/"
 
     def __str__(self):
