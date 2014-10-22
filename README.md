@@ -16,10 +16,10 @@ You're insane. This isn't ready for you to install.
 
 If you insist:
 
-# Import the `openqua.sql` file into MySQL. This will create the database.
-# Run each of the scrapers (`repeater_*.py` in `scrapers/`) to import the data.
-# Run `python app.py` in the `web/` directory.
-# Browse to http://localhost:5000/ and enjoy.
+1. Import the `openqua.sql` file into MySQL. This will create the database.
+2. Run each of the scrapers (`repeater_*.py` in `scrapers/`) to import the data.
+3. Run `python app.py` in the `web/` directory.
+4. Browse to http://localhost:5000/ and enjoy.
 
 License
 -------
