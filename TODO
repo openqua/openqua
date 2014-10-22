@@ -1,15 +1,43 @@
 
-Scrapers
-========
+Todo List
+=========
 
+Database
+--------
+
+  * >1GHz TX/RX frequencies
+  * Sort out remaining modes
+  * Add club table
+  * Add beacon table
+
+Web Interface
+-------------
+
+  * Home page w/ search
+  * Detail pages for callsigns
+  * Detail pages for cities
+  * "World" map
+   * Modes / Tones
+   * Add Packet Nodes / Beacons / Clubs
+   * Link to callsign detail pages
+  * Database dumps
+
+Scrapers
+--------
+
+  * United Kingdom
+   * Scrape mailboxes/packet nodes
+   * Scrape beacons
   * Ireland - http://www.irts.ie/cgi/repeater.cgi?printable
    * Still needs a bit of work - some shortcuts taken
-  * France - http://cnrb.ref-union.org/relais/index.php?carte=13
+  * France - http://cnrb.ref-union.org/relais/index.php?carte-13
   * Germany - ?
-  * Belgium - ?
+  * Belgium - http://www.uba.be/en/latest/unmanned-stations
   * Luxembourg - ?
 
- A nice list of lists is here:
+Live Scrapers
+-------------
 
- http://www.uba.be/en/latest/unmanned-stations
+  * Echolink
+  * APRS-IS
 

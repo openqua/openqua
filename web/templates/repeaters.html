@@ -2,51 +2,87 @@
   <div id="mapdiv"></div>
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
   <script>
-    map = new OpenLayers.Map("mapdiv");
+    //map_controls = [ new OpenLayers.Control.OverviewMap(), new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.PanZoomBar(), new OpenLayers.Control.NavToolbar() ];
+    map = new OpenLayers.Map("mapdiv"); //, {'controls': map_controls});
+    ls = new OpenLayers.Control.LayerSwitcher()
+    map.addControl(ls);
+    ls.maximizeControl();
     map.addLayer(new OpenLayers.Layer.OSM());
 
     epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
     projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
  
-    var zoom=5;
- 
-    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
 
+    // FM Repeaters Layer
+ 
+    var fmLayer = new OpenLayers.Layer.Vector("FM Repeaters");
 
     {% for repeater in repeaters %}
+    {% if repeater.mo == "FM" %}
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'}
-    {% if repeater.mo == "FM" %}
-            ,{externalGraphic: '{{ url_for('static', filename='img/fm-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
-    {% endif %}
-    {% if repeater.mo == "DSTAR" %}
-            ,{externalGraphic: '{{ url_for('static', filename='img/dstar-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
-    {% endif %}
-    {% if "FSK" in repeater.mo %}
-            ,{externalGraphic: '{{ url_for('static', filename='img/packet-station.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
-    {% endif %}
-    {% if repeater.mo == "DMR" %}
-            ,{externalGraphic: '{{ url_for('static', filename='img/dmr-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
-    {% endif %}
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {externalGraphic: '{{ url_for('static', filename='img/fm-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
-    vectorLayer.addFeatures(feature);
+    fmLayer.addFeatures(feature);
+    {% endif %}
     {% endfor %}
+
+    map.addLayer(fmLayer);
+
+    // D-Star Repeaters Layer
+
+    var dstarLayer = new OpenLayers.Layer.Vector("D-STAR Repeaters");
+
+    {% for repeater in repeaters %}
+    {% if repeater.mo == "DSTAR" %}
+    // Define markers as "features" of the vector layer:
+    var feature = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {externalGraphic: '{{ url_for('static', filename='img/dstar-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+        );
+    dstarLayer.addFeatures(feature);
+    {% endif %}
+    {% endfor %}
+
+    map.addLayer(dstarLayer);
+
+    // DMR Repeaters Layer
+
+    var dmrLayer = new OpenLayers.Layer.Vector("DMR Repeaters");
+
+    {% for repeater in repeaters %}
+    {% if repeater.mo == "DMR" %}
+    // Define markers as "features" of the vector layer:
+    var feature = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {externalGraphic: '{{ url_for('static', filename='img/dmr-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+        );
+    dmrLayer.addFeatures(feature);
+    {% endif %}
+    {% endfor %}
+
+    map.addLayer(dmrLayer);
+
+    // Set the initial view
+
+    var zoom = 5;
 
     var lonLat = new OpenLayers.LonLat( -3, 55 )
           .transform(
             new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
             map.getProjectionObject() // to Spherical Mercator Projection
           ); 
-
-    map.addLayer(vectorLayer);
  
     map.setCenter (lonLat, zoom);
 
-    //Add a selector control to the vectorLayer with popup functions
+    //Add a selector control to the layers with popup functions
+
     var controls = {
-      selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
+      selector: new OpenLayers.Control.SelectFeature([fmLayer, dstarLayer, dmrLayer], { onSelect: createPopup, onUnselect: destroyPopup }),
     };
 
     function createPopup(feature) {
@@ -69,5 +105,6 @@
     
     map.addControl(controls['selector']);
     controls['selector'].activate();
+
   </script>
 </body></html>
