@@ -5,7 +5,7 @@ class Database:
 
     def __init__(self):
         self.cnx = mysql.connector.connect(user='openqua',
-                                      password='xxxxxxxxxxxxxxx',
+                                      password='xxxxxxxxx',
                                       host='127.0.0.1', database='openqua')
 
     def get_repeater(self, callsign):
@@ -29,7 +29,7 @@ class Database:
 
     def get_all_repeaters(self):
         cursor = self.cnx.cursor()
-        query = "SELECT * FROM repeater"
+        query = "SELECT station.callsign, rx, tx, ctcss, mode, locator, town, keeper, lat, lon FROM station, station_repeater WHERE station.callsign = station_repeater.callsign"
         cursor.execute(query)
         repeaters = []
         for (callsign, rx, tx, to, mo, ml, lo, ke, lat, lon) in cursor:
