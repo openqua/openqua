@@ -17,6 +17,17 @@ CREATE TABLE IF NOT EXISTS `station` (
   `source` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `station_club` (
+  `callsign` varchar(10) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `town` varchar(60) CHARACTER SET latin1 NOT NULL,
+  `locator` varchar(10) CHARACTER SET latin1 NOT NULL,
+  `lat` decimal(15,10) NOT NULL,
+  `lon` decimal(15,10) NOT NULL,
+  `lastupdated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `source` varchar(255) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `station_repeater` (
   `callsign` varchar(10) CHARACTER SET latin1 NOT NULL,
   `ssid` varchar(3) CHARACTER SET latin1 NOT NULL,

@@ -11,6 +11,22 @@
 
     epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
     projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+
+    // Clubs Layer
+
+    var clubsLayer = new OpenLayers.Layer.Vector("Amateur Radio Clubs");
+
+    {% for club in clubs %}
+    // Define markers as "features" of the vector layer:
+    var feature = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point( {{ club.lon }} , {{ club.lat }} ).transform(epsg4326, projectTo),
+            {description:'Callsign: {{ club.callsign }}<br>Name: {{ club.name }}'},
+            {externalGraphic: '{{ url_for('static', filename='img/club-station.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+        );
+    clubsLayer.addFeatures(feature);
+    {% endfor %}
+
+    map.addLayer(clubsLayer);
  
 
     // FM Repeaters Layer
@@ -82,7 +98,7 @@
     //Add a selector control to the layers with popup functions
 
     var controls = {
-      selector: new OpenLayers.Control.SelectFeature([fmLayer, dstarLayer, dmrLayer], { onSelect: createPopup, onUnselect: destroyPopup }),
+      selector: new OpenLayers.Control.SelectFeature([clubsLayer, fmLayer, dstarLayer, dmrLayer], { onSelect: createPopup, onUnselect: destroyPopup }),
     };
 
     function createPopup(feature) {

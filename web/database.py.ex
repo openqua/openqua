@@ -46,6 +46,18 @@ class Database:
             repeaters.append(repeater)
         return repeaters
 
+    def get_all_clubs(self):
+        cursor = self.cnx.cursor()
+        query = "SELECT station.callsign, name, lat, lon FROM station, station_club WHERE station.callsign = station_club.callsign"
+        cursor.execute(query)
+        clubs = []
+        for (callsign, name, lat, lon) in cursor:
+            club =  { 'callsign': callsign,
+                     'name': name,
+                     'lat': lat,
+                     'lon': lon }
+            clubs.append(club)
+        return clubs
 
     def close(self):
         self.cnx.close()

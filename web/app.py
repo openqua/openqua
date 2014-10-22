@@ -82,7 +82,7 @@ def callsign_detail_json(callsign):
 @app.route("/repeaters")
 def repeaters_map():
     db = Database()
-    return render_template("repeaters.html", repeaters = db.get_all_repeaters())
+    return render_template("repeaters.html", repeaters = db.get_all_repeaters(), clubs=db.get_all_clubs())
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
