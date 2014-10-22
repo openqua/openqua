@@ -20,6 +20,8 @@ Web Interface
    * Modes / Tones
    * Add Packet Nodes / Beacons / Clubs
    * Link to callsign detail pages
+   * Band selection
+   * Variable heights (3 options?)
   * Database dumps
 
 Scrapers
@@ -34,6 +36,8 @@ Scrapers
   * Germany - ?
   * Belgium - http://www.uba.be/en/latest/unmanned-stations
   * Luxembourg - ?
+  * Netherlands
+   * Add beacons
 
 Live Scrapers
 -------------
