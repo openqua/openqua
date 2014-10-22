@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% block content %}
+<h2>OpenQUA API v0.1</h2>
+<p>The API endpoint for the official OpenQUA instance can be found at:</p>
+<pre style="border:1px solid #000; background-color: #eee;color: red;">http://openqua.com/api/0.1/</pre>
+<dl>
+	<dt>repeaters.json</dt>
+	<dd>A JSON representation of all the repeaters that are known to OpenQUA.</dd>
+	<dt>clubs.json</dt>
+	<dd>A JSON representation of all the clubs that are known to OpenQUA.</dd>
+	<dt>callsign/<callsign>.json</dt>
+	<dd>A JSON representation of all the information on a callsign known to OpenQUA.</dd>
+</dl>
+<p>If you're doing anything with this data, you're insane. We just scraped it off some guy's website on the Internet. Good luck though.</p>
+{% endblock %}
