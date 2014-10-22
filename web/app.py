@@ -29,13 +29,10 @@
 
 from database import Database
 import re, subprocess
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, redirect
 app = Flask(__name__)
 db = Database()
 
-@app.route("/")
-def hello():
-    return "OpenQUA!"
 
 def get_dxcc(callsign):
     callsign = callsign.upper()
@@ -55,34 +52,77 @@ def get_dxcc(callsign):
 
 def add_repeater_detail(callsign, detail):
     repeater = db.get_repeater(callsign.upper())
-    if repeater == None:
+    if len(repeater) == 0:
         return detail
-    detail['repeater'] = {
-            'tx': repeater['tx'],
-            'rx': repeater['rx'],
-            'tone': repeater['to'],
-            'mode': repeater['mo'],
-            'keeper': repeater['ke']
-            }
-    detail['lat'] = repeater['lat']
-    detail['lon'] = repeater['lon']
-    detail['locator'] = repeater['ml']
-    detail['town'] = repeater['lo']
+    detail['repeater'] = repeater
+    detail['lat'] = float(repeater[0]['lat'])
+    detail['lon'] = float(repeater[0]['lon'])
+    detail['locator'] = repeater[0]['locator']
+    detail['town'] = repeater[0]['town']
     return detail
 
-@app.route("/j/<callsign>")
-def callsign_detail_json(callsign):
+def add_club_detail(callsign, detail):
+    club = db.get_club(callsign.upper())
+    if club == None:
+        return detail
+    detail['club'] = club
+    detail['lat'] = float(club['lat'])
+    detail['lon'] = float(club['lon'])
+    detail['locator'] = club['locator']
+    detail['town'] = club['town']
+    return detail
+
+def get_callsign_detail(callsign):
     detail = get_dxcc(callsign)
     detail = add_repeater_detail(callsign, detail)
+    detail = add_club_detail(callsign, detail)
     # TODO Get beacon data from database
     # TODO Get APRS-IS data from APRS-IS
     # TODO Get Echolink data from database
+    return detail
+
+@app.route("/api/0.1/repeaters.json")
+def api_repeaters_json():
+    db = Database()
+    return jsonify({'repeaters': db.get_all_repeaters()})
+
+@app.route("/api/0.1/repeater/<callsign>.json")
+def api_repeater_json(callsign):
+    db = Database()
+    return jsonify({'repeater': db.get_repeater(callsign.upper())})
+
+@app.route("/api/0.1/clubs.json")
+def api_clubs_json():
+    db = Database()
+    return jsonify({'clubs': db.get_all_clubs()})
+
+@app.route("/api/0.1/club/<callsign>.json")
+def api_club_json(callsign):
+    db = Database()
+    return jsonify({'club': db.get_club(callsign.upper())})
+
+@app.route("/api/0.1/callsign/<callsign>.json")
+def callsign_detail_json(callsign):
+    detail = get_callsign_detail(callsign)
     return jsonify(detail)
 
-@app.route("/repeaters")
+@app.route("/map")
 def repeaters_map():
     db = Database()
-    return render_template("repeaters.html", repeaters = db.get_all_repeaters(), clubs=db.get_all_clubs())
+    return render_template("map.html", repeaters = db.get_all_repeaters(), clubs=db.get_all_clubs())
+
+@app.route("/c/")
+def callsign_no_callsign():
+    return redirect("/")
+
+@app.route("/c/<callsign>")
+def callsign_detail_page(callsign):
+    detail = get_callsign_detail(callsign)
+    return render_template("callsign.html", callsign = detail)
+
+@app.route("/")
+def hello():
+    return render_template("home.html")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

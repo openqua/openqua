@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% block content %}
+<h2>{{ callsign.callsign }}</h2>
+<dl>
+	<dt>Latitude/Longitude</dt>
+	<dd>{{ callsign.lat }} / {{ callsign.lon }}</dd>
+	{% if "locator" in callsign.keys() %}
+	<dt>Maidenhead Locator</dt>
+	<dd>{{ callsign.locator }}</dd>
+	{% endif %}
+	<dt>DXCC Entity</dt>
+	<dd>{{ callsign.dxcc }}</dd>
+</dl>
+{% if "repeater" in callsign.keys() %}
+<p>This is a repeater station.</p>
+{% endif %}
+{% if "club" in callsign.keys() %}
+<p>This is a club station.</p>
+{% endif %}
+{% endblock %}

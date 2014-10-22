@@ -34,11 +34,11 @@
     var fmLayer = new OpenLayers.Layer.Vector("FM Repeaters");
 
     {% for repeater in repeaters %}
-    {% if repeater.mo == "FM" %}
+    {% if repeater.mode == "FM" %}
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/fm-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     fmLayer.addFeatures(feature);
@@ -52,11 +52,11 @@
     var dstarLayer = new OpenLayers.Layer.Vector("D-STAR Repeaters");
 
     {% for repeater in repeaters %}
-    {% if repeater.mo == "DSTAR" %}
+    {% if repeater.mode == "DSTAR" %}
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/dstar-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     dstarLayer.addFeatures(feature);
@@ -70,11 +70,11 @@
     var dmrLayer = new OpenLayers.Layer.Vector("DMR Repeaters");
 
     {% for repeater in repeaters %}
-    {% if repeater.mo == "DMR" %}
+    {% if repeater.mode == "DMR" %}
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/dmr-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     dmrLayer.addFeatures(feature);
