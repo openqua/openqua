@@ -85,8 +85,12 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
         elif "D-Star" in repeater_category_title:
             repeater.mode = "D-Star"
         elif "Packetradio" in repeater_category_title:
-            repeater.mode = "Packetradio"
-            # TODO Add baudrate from repeater_info[5]
+            repeater.mode = repeater_info[5]. \
+                replace("1k2", "AFSK1200"). \
+                replace("4k8", "FSK4800"). \
+                replace("9k6", "FSK9600"). \
+                replace("19k2", "FSK19200"). \
+                replace("76k8", "FSK76800")
         repeater.locator = repeater_info[4]
         repeater.town = repeater_info[1]
         if repeater.locator == "?":
