@@ -29,7 +29,7 @@
 
 from database import Database
 import re, subprocess
-from flask import Flask, jsonify, render_template, redirect
+from flask import Flask, jsonify, render_template, redirect, request
 app = Flask(__name__)
 db = Database()
 
@@ -119,6 +119,11 @@ def callsign_no_callsign():
 def callsign_detail_page(callsign):
     detail = get_callsign_detail(callsign)
     return render_template("callsign.html", callsign = detail)
+
+@app.route("/search")
+def callsign_search():
+    callsign = request.args.get("callsign")
+    return redirect("/c/" + callsign)
 
 @app.route("/")
 def hello():
