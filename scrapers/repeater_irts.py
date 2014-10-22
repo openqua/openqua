@@ -62,7 +62,7 @@ for row in repeater_rows:
         repeater.burst = True
     else:
         repeater.ctcss = re.sub("Hz", "", activation)
-    repeater.mode = "FMVOICE"
+    repeater.mode = "FM"
     repeater.town = fields[4].next_element.strip()
     location = geolocator.geocode(re.sub(",.*$", "", repeater.town) + ", Republic of Ireland", timeout=10)
     if location == None:

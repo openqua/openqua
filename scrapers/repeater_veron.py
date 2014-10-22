@@ -83,7 +83,7 @@ for repeater_category in veron_soup.find_all(class_="tekstblok")[:-1]:
                 repeater.ctcss = float(repeater_info[5].replace(',', '.'))
             repeater.mode = "FM"
         elif "D-Star" in repeater_category_title:
-            repeater.mode = "D-Star"
+            repeater.mode = "DSTAR"
         elif "Packetradio" in repeater_category_title:
             repeater.mode = repeater_info[5]. \
                 replace("1k2", "AFSK1200"). \

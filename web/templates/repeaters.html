@@ -14,15 +14,24 @@
 
 
     {% for repeater in repeaters %}
-
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'},
-            {externalGraphic: '{{ url_for('static', filename='img/repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
-        );    
+            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mo }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.to }}'}
+    {% if repeater.mo == "FM" %}
+            ,{externalGraphic: '{{ url_for('static', filename='img/fm-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+    {% endif %}
+    {% if repeater.mo == "DSTAR" %}
+            ,{externalGraphic: '{{ url_for('static', filename='img/dstar-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+    {% endif %}
+    {% if "FSK" in repeater.mo %}
+            ,{externalGraphic: '{{ url_for('static', filename='img/packet-station.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+    {% endif %}
+    {% if repeater.mo == "DMR" %}
+            ,{externalGraphic: '{{ url_for('static', filename='img/dmr-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
+    {% endif %}
+        );
     vectorLayer.addFeatures(feature);
-
     {% endfor %}
 
     var lonLat = new OpenLayers.LonLat( -3, 55 )

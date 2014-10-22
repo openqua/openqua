@@ -69,13 +69,13 @@ for row in data:
     if row[10] != '':
         repeater.ctcss = float(row[10])
     if row[5] == "AV":
-        repeater.mode = "FMVOICE"
+        repeater.mode = "FM"
     if row[5] == "DSTAR":
-        repeater.mode = "D-STAR"
+        repeater.mode = "DSTAR"
     if row[5] == "DMR":
         repeater.mode = "DMR"
     if row[5] == "DUALMODE":
-        repeater.mode = "FMVOICE"
+        repeater.mode = "FM"
     repeater.locator = row[6]
     repeater.town = row[7]
     repeater.keeper = row[11]

@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `station` (
 CREATE TABLE IF NOT EXISTS `station_repeater` (
   `callsign` varchar(10) CHARACTER SET latin1 NOT NULL,
   `ssid` varchar(3) CHARACTER SET latin1 NOT NULL,
-  `mode` enum('FMVOICE','DSTAR','DMR','PACKET','ATV') CHARACTER SET latin1 NOT NULL,
+  `mode` enum('FM','DSTAR','DMR','ATV','AFSK1200','FSK4800','FSK9600','FSK19200','FSK76800') CHARACTER SET latin1 NOT NULL,
   `tx` decimal(7,4) NOT NULL,
   `rx` decimal(7,4) NOT NULL,
   `carrier` tinyint(1) NOT NULL,
