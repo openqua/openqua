@@ -1,0 +1,67 @@
+#!/bin/env python2
+
+# This file is part of OpenQUA.
+# 
+# Copyright (c) 2014 Derecho and contributors. All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+# 
+# * Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+# * Neither the name of openqua nor the names of its
+# contributors may be used to endorse or promote products derived from
+# this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+# While DARC offers repeater data for many countries, this script only scrapes
+# the german ones. This is because DARC is the official authority that handles
+# their registration. All info from other counties has been collected by them
+# elsewhere.
+
+import urllib2
+
+def get_repeater_data(locator):
+    """Fetches CSV data for up to 600 repeaters nearest to the given locator"""
+    darc_data = urllib2.urlopen("http://echorelais.darc.de/cgi-bin/relais.pl?lat_deg=50&lat_min=58.75&lat_NS=Nord&lon_deg=10&lon_min=02.50&lon_EW=Ost&city=&sel=gridsq&gs={}&ctrcall=&dxcc=DL&maxgateways=600&printas=csv&type=DL3EL&type=el&type=il&type=ds&type=dm&type=Baken&kmmls=km".format(locator)).read()
+    # Get rid of headings and instruction footer
+    darc_lines = darc_data.split("\n")[1:-2]
+
+    # Get rid of distance to locator
+    return_data = ""
+    for line in darc_lines:
+        return_data += ';'.join(line.split(';')[:-1]) + '\n'
+
+    return return_data
+
+def assemble_repeater_data(locators):
+    """Fetches CSV data for each locator and returns the unique assembled repeater list as CSV data"""
+    unique_repeaters = set()
+
+    for locator in locators:
+        repeater_data = get_repeater_data(locator)
+        for line in repeater_data.split('\n'):
+            unique_repeaters.add(line)
+
+    return '\n'.join(unique_repeaters)
+
+# TODO Process assembled data and populate database.
+# Note: some descriptions have \r and/or extra whitespace in them, printing the
+# current data gives a messy output.
+
+# Assuming these four locations will result in a complete set
+data = assemble_repeater_data(["JO41AD", "JO53BJ", "JO62FD", "JN59EH"])
