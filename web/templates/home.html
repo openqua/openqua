@@ -1,33 +1,51 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>OpenQUA</title>
-<style type="text/css">
-body { font-family: monospace; background-color: #666; color: #ddd; }
-a { color: #dd0; }
-</style>
-</head>
+<html lang="en">                                                                 
+  <head>                                                                         
+    <meta charset="utf-8">                                                       
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">                        
+    <meta name="viewport" content="width=device-width, initial-scale=1">         
+    <meta name="description" content="">                                         
+    <meta name="author" content="">                                              
+                                                                                 
+    <title>OpenQUA</title>                                                       
+                                                                                 
+    <!-- Bootstrap core CSS -->                                                  
+    <link href="/static/css/bootstrap.css" rel="stylesheet">                     
+                                                                                 
+    <!-- Custom styles for this template -->                                     
+    <link href="/static/css/wiki.css" rel="stylesheet">                          
+                                                                                 
+    <!-- TODO: Make this local, privacy etc. -->                                 
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+                                                                                 
+    <!-- Core Bootstrap JS -->                                                   
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>         
+    <script src="/static/js/bootstrap.min.js"></script>                          
+                                                                                 
+  </head> 
+	
+	<body style="text-align:center;">
 
-<body style="text-align:center;">
-
-<h1 style="font-size: 100px;line-height: 100px;padding:0;margin:20px 0 0 0;">OpenQUA</h1>
+<h1 style="font-size: 100px;line-height: 100px;padding:0;margin:20px 0 20px 0;">OpenQUA</h1>
 
 <p>Have you heard news of .... ?</p>
 
 <br>
 
 <form action="/search" method="GET">
-	<input type="text" name="callsign" style="border:1px solid #000;">
+	<input placeholder="Callsign" type="text" name="callsign" style="border:1px solid #000;">
 	<input type="submit" style="border:1px solid #000;" value="Search">
 </form>
 
 <br>
 
-<p><a href="/api/0.1/">API</a> | <a href="/map">Map</a> | <a href="http://github.com/openqua/openqua">Source Code</a></p>
+<p><a href="/api/0.1/">API</a> | <a href="/map">Map</a></p>
 
 <hr>
 
-<p>An <a href="http://iain.learmonth.me/">irl</a> and <a href="http://sector5d.org/">derecho</a> project.</p>
+      <p>An <a href="http://github.com/openqua/openqua/">open source</a> project by <a href="http://iain.learmonth.me/">irl</a>, <a href="http://sector5d.org/">derecho</a> and others.</p>
+
 </body>
 
 </html> 

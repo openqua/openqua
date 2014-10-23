@@ -20,6 +20,13 @@ h6, .h6 {
 }
 
 /*
+ * Map
+ */
+#mapdiv a {
+	color: #666600!important;
+}
+
+/*
  * Titles
  */
 
