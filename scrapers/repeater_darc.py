@@ -34,12 +34,15 @@
 # elsewhere.
 
 import urllib2
+import csv
+
+from repeater import Repeater
 
 def get_repeater_data(locator):
     """Fetches CSV data for up to 600 repeaters nearest to the given locator"""
     darc_data = urllib2.urlopen("http://echorelais.darc.de/cgi-bin/relais.pl?lat_deg=50&lat_min=58.75&lat_NS=Nord&lon_deg=10&lon_min=02.50&lon_EW=Ost&city=&sel=gridsq&gs={}&ctrcall=&dxcc=DL&maxgateways=600&printas=csv&type=DL3EL&type=el&type=il&type=ds&type=dm&type=Baken&kmmls=km".format(locator)).read()
     # Get rid of headings and instruction footer
-    darc_lines = darc_data.split("\n")[1:-2]
+    darc_lines = darc_data.split('\n')[1:-2]
 
     # Get rid of distance to locator
     return_data = ""
@@ -59,9 +62,38 @@ def assemble_repeater_data(locators):
 
     return '\n'.join(unique_repeaters)
 
-# TODO Process assembled data and populate database.
-# Note: some descriptions have \r and/or extra whitespace in them, printing the
-# current data gives a messy output.
-
 # Assuming these four locations will result in a complete set
 data = assemble_repeater_data(["JO41AD", "JO53BJ", "JO62FD", "JN59EH"])
+
+# Clean it up a bit
+data = data.replace('\r', '')
+data = data.replace('&deg;', ' ')
+
+for row in csv.reader(data.split('\n'), delimiter=';'):
+    if len(row) != 9:
+        continue
+    repeater = Repeater(row[0])
+    try:
+        repeater.tx = float(row[1].replace(',', '.'))
+    except ValueError:
+        # Some data is just wrong or malformatted
+        pass
+    if (row[2] != '') and (row[2] != 'Beacon'):
+        try:
+            repeater.rx = float(row[2].replace(',', '.'))
+        except ValueError:
+            pass
+    if row[7] != '':
+        repeater.ctcss = float(row[7].replace(',', '.'))
+    if row[8] != '':  # Unfortunately, most will be missing this
+        repeater.mode = row[8]
+    repeater.locator = row[3]
+    # The fourth column is actually info, and *usually* has the town name.
+    # It may be something different, or have additional information.
+    # TODO Get town name based on lat/long or locator
+    repeater.town = ' '.join(row[4].split())  # Remove consecutive whitespace
+    repeater.lat = row[5]
+    repeater.lon = row[6]
+    repeater.source = "http://echorelais.darc.de/"
+    print(repeater)
+    repeater.update()
