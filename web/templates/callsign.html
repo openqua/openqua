@@ -1,20 +1,67 @@
 {% extends "main.html" %}
 {% block content %}
+      <div class="row">                                                          
+                                                                                 
+        <div class="col-sm-8 wiki-main">                                         
+                                                                                 
 <h2>{{ callsign.callsign }}</h2>
-<dl>
-	<dt>Latitude/Longitude</dt>
-	<dd>{{ callsign.lat }} / {{ callsign.lon }}</dd>
+<p class="dxcc">{{ callsign.dxcc }}</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Summary</h3>
+  </div>
+  <div class="panel-body">
+<ul>
+	<li>Latitude/Longitude: {{ callsign.lat }} / {{ callsign.lon }}</li>
 	{% if "locator" in callsign.keys() %}
-	<dt>Maidenhead Locator</dt>
-	<dd>{{ callsign.locator }}</dd>
+	<li>Maidenhead Locator: {{ callsign.locator }}</li>
 	{% endif %}
-	<dt>DXCC Entity</dt>
-	<dd>{{ callsign.dxcc }}</dd>
-</dl>
+	{% if "repeater" in callsign.keys() and callsign.repeater[0].keeper != "" %}
+	<li>Keeper: {{ callsign.repeater[0].keeper }}</li>
+	{% endif %}
+</ul>
+  </div>
+</div>
+
 {% if "repeater" in callsign.keys() %}
-<p>This is a repeater station.</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Repeater Details</h3>
+  </div>
+  <div class="panel-body">
+	  <table style="width: 100%; font-size: 16px!important;">
+		  <tr>
+			  <th>Callsign</th>
+			  <th>Tx/Rx</th>
+			  <th>Activation</th>
+			  <th>Location</th>
+		  </tr>
+{% for r in callsign.repeater %}
+		  <tr>
+			  <td>{{ r.callsign }}</td>
+			  <td>{{ r.tx }}MHz/{{ r.rx }}MHz</td>
+			  <td>{% if r.burst %}1750Hz Burst Tone{% elif r.carrier %}Carrier Presence{% elif r.ctcss != 0 %}{{ r.ctcss }}Hz CTCSS Tone{% else %}Something broke{% endif %}</td>
+			  <td>{{ r.locator }}</td>
+		  </tr>
+{% endfor %}
+	  </table>
+  </div>
+</div>
 {% endif %}
+
 {% if "club" in callsign.keys() %}
 <p>This is a club station.</p>
 {% endif %}
+
+        </div><!-- /.wiki-main -->                                               
+                                                                                 
+        <div class="col-sm-3 col-sm-offset-1 wiki-sidebar">                      
+          <div class="sidebar-module">                                           
+                  <p>&nbsp;</p>                                                  
+          </div>                                                                 
+        </div><!-- /.wiki-sidebar -->                                            
+                                                                                 
+      </div><!-- /.row --> 
+
 {% endblock %}

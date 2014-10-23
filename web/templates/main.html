@@ -1,25 +1,77 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>OpenQUA</title>
-<style type="text/css">
-body { font-family: monospace; background-color: #666; color: #ddd; }
-a { color: #dd0; }
-</style>
-</head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<body>
-<h1>OpenQUA</h1>
+    <title>OpenQUA</title>
 
-<p>Have you heard news of .... ?</p>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
 
-<hr>
+    <!-- Custom styles for this template -->
+    <link href="/static/css/wiki.css" rel="stylesheet">
+
+    <!-- TODO: Make this local, privacy etc. -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Core Bootstrap JS -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="wiki-header">
+        <h1 class="wiki-title">OpenQUA</h1>
+        <p class="lead wiki-description">Have you heard news for ... ?</p>
+      </div>
+
+
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">OpenQUA</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-nav">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/map">Map</a></li>
+        <li><a href="/api">API</a></li>
+      </ul>
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 {% block content %}{% endblock %}
 
-<hr>
+    </div><!-- /.container -->
 
-<p>An <a href="http://iain.learmonth.me/">irl</a> and <a href="http://sector5d.org/">derecho</a> project. <a href="https://github.com/openqua/openqua">Source code</a>.
-</body>
-
-</html> 
+    <div class="wiki-footer">
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+<p>A <a href="http://57north.co/">57North Hacklab</a> project.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+/*
+ * Globals
+ */
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top: 0;
+}
+
+/*
+ * Nav
+ */
+
+.navbar-default {
+  border-bottom: 1px solid #000033;
+}
+
+/*
+ * Titles
+ */
+
+.wiki-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.wiki-title {
+  margin-top: 30px;
+  margin-bottom: 0;
+  font-size: 60px;
+  font-weight: normal;
+}
+.wiki-description {
+  font-size: 20px;
+  color: #999;
+}
+
+
+/*
+ * Main column and sidebar layout
+ */
+
+.wiki-main {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* Sidebar modules for boxing content */
+.sidebar-module {
+  padding: 15px;
+  margin: 0 -15px 15px;
+}
+.sidebar-module-inset {
+  padding: 15px;
+  border-radius: 4px;
+}
+.sidebar-module-inset p:last-child,
+.sidebar-module-inset ul:last-child,
+.sidebar-module-inset ol:last-child {
+  margin-bottom: 0;
+}
+
+
+/*
+ * Articles 
+ */
+
+.wiki-article {
+  margin-bottom: 60px;
+}
+.wiki-article-title {
+  margin-bottom: 5px;
+  font-size: 40px;
+}
+.wiki-article-meta {
+  margin-bottom: 20px;
+  color: #999;
+}
+
+
+/*
+ * Footer
+ */
+
+.wiki-footer {
+  padding: 20px 0;
+  color: #999;
+  text-align: center;
+  background-color: #4e5d6c;
+  border-top: 1px solid #000033;
+}
+
