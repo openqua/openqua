@@ -112,6 +112,14 @@ def repeaters_map():
     db = Database()
     return render_template("map.html", repeaters = db.get_all_repeaters(), clubs=db.get_all_clubs())
 
+@app.route("/api/")
+def redirect_latest_api():
+    return redirect("/api/0.1/")
+
+@app.route("/api/0.1/")
+def api_0_1_docs():
+    return render_template("api_0_1.html")
+
 @app.route("/c/")
 def callsign_no_callsign():
     return redirect("/")
@@ -131,5 +139,5 @@ def hello():
     return render_template("home.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True)
 
