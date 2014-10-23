@@ -83,10 +83,11 @@ for row in csv.reader(data.split('\n'), delimiter=';'):
             repeater.rx = float(row[2].replace(',', '.'))
         except ValueError:
             pass
+    if row[8] == 'DMR':  # Unfortunately, most will be missing this
+        repeater.mode = row[8]
     if row[7] != '':
         repeater.ctcss = float(row[7].replace(',', '.'))
-    if row[8] != '':  # Unfortunately, most will be missing this
-        repeater.mode = row[8]
+        repeater.mode = "FM"
     repeater.locator = row[3]
     # The fourth column is actually info, and *usually* has the town name.
     # It may be something different, or have additional information.
