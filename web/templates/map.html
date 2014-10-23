@@ -1,5 +1,10 @@
-<html><body>
-  <div id="mapdiv"></div>
+{% extends "main.html" %}
+{% block content %}
+<div class="row">                                                          
+                                                                                 
+        <div class="col-sm-12 wiki-main">
+		<h2>Map</h2>
+<div id="mapdiv" style="width: 100%; height: 700px; color: #000!important;"></div>
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
   <script>
     //map_controls = [ new OpenLayers.Control.OverviewMap(), new OpenLayers.Control.LayerSwitcher(), new OpenLayers.Control.PanZoomBar(), new OpenLayers.Control.NavToolbar() ];
@@ -20,7 +25,7 @@
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ club.lon }} , {{ club.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ club.callsign }}<br>Name: {{ club.name }}'},
+	    {description:'Callsign: <a href="/c/{{ club.callsign }}">{{ club.callsign }}</a><br>Name: {{ club.name }}'},
             {externalGraphic: '{{ url_for('static', filename='img/club-station.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     clubsLayer.addFeatures(feature);
@@ -38,7 +43,7 @@
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
+	    {description:'Callsign: <a href="/c/{{ repeater.callsign }}">{{ repeater.callsign }}</a><br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/fm-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     fmLayer.addFeatures(feature);
@@ -56,7 +61,7 @@
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
+	    {description:'Callsign: <a href="/c/{{ repeater.callsign }}">{{ repeater.callsign }}</a><br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/dstar-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     dstarLayer.addFeatures(feature);
@@ -74,7 +79,7 @@
     // Define markers as "features" of the vector layer:
     var feature = new OpenLayers.Feature.Vector(
             new OpenLayers.Geometry.Point( {{ repeater.lon }} , {{ repeater.lat }} ).transform(epsg4326, projectTo),
-            {description:'Callsign: {{ repeater.callsign }}<br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
+	    {description:'Callsign: <a href="/c/{{ repeater.callsign }}">{{ repeater.callsign }}</a><br>Mode: {{ repeater.mode }}<br>TX/RX: {{ repeater.tx }}/{{ repeater.rx }}<br>CTCSS: {{ repeater.ctcss }}'},
             {externalGraphic: '{{ url_for('static', filename='img/dmr-repeater.gif') }}', graphicHeight: 22, graphicWidth: 22, graphicXOffset:-11, graphicYOffset:-22  }
         );
     dmrLayer.addFeatures(feature);
@@ -123,4 +128,7 @@
     controls['selector'].activate();
 
   </script>
-</body></html>
+  <br>
+	</div>
+</div>
+{% endblock %}

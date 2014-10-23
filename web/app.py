@@ -54,6 +54,7 @@ def add_repeater_detail(callsign, detail):
     repeater = db.get_repeater(callsign.upper())
     if len(repeater) == 0:
         return detail
+    print repeater
     detail['repeater'] = repeater
     detail['lat'] = float(repeater[0]['lat'])
     detail['lon'] = float(repeater[0]['lon'])
