@@ -40,7 +40,7 @@ class Repeater:
             self.callsign = ident[0]
             self.ssid = ident[1]
         self.keeper = None
-        self.mode = "FMVOICE"
+        self.mode = "UNKNOWN"
         self.tx = 0
         self.rx = 0
         self.carrier = False
