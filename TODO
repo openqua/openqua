@@ -15,15 +15,18 @@ Web Interface
 
   * Home page w/ search
   * Detail pages for callsigns
+   * Club details
+   * Integrate APRS data from aprs.fi
   * Detail pages for cities
   * "World" map
    * Modes / Tones
    * Add Packet Nodes / Beacons / Clubs
    * Link to callsign detail pages
    * Band selection
-   * Variable heights (3 options?)
    * Maidenhead locator grid layer
   * Database dumps
+  * Repeaters page (based on http://labs.mgdm.net/repeaters/)
+  * Clubs page (similar to repeaters page but with clubs data)
 
 Scrapers
 --------
