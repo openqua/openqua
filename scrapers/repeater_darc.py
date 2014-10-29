@@ -35,6 +35,7 @@
 
 import urllib2
 import csv
+from pyhamtools.locator import locator_to_latlong
 
 from repeater import Repeater
 
@@ -93,8 +94,7 @@ for row in csv.reader(data.split('\n'), delimiter=';'):
     # It may be something different, or have additional information.
     # TODO Get town name based on lat/long or locator
     repeater.town = ' '.join(row[4].split())  # Remove consecutive whitespace
-    repeater.lat = row[5]
-    repeater.lon = row[6]
+    repeater.lat, repeater.lon = locator_to_latlong(repeater.locator)
     repeater.source = "http://echorelais.darc.de/"
     print(repeater)
     repeater.update()

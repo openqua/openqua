@@ -31,7 +31,6 @@ from database import Database
 import re, subprocess
 from flask import Flask, jsonify, render_template, redirect, request
 app = Flask(__name__)
-db = Database()
 
 
 def get_dxcc(callsign):
@@ -51,6 +50,7 @@ def get_dxcc(callsign):
     return detail
 
 def add_repeater_detail(callsign, detail):
+    db = Database()
     repeater = db.get_repeater(callsign.upper())
     if len(repeater) == 0:
         return detail
@@ -63,6 +63,7 @@ def add_repeater_detail(callsign, detail):
     return detail
 
 def add_club_detail(callsign, detail):
+    db = Database()
     club = db.get_club(callsign.upper())
     if club == None:
         return detail
