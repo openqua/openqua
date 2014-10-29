@@ -31,17 +31,19 @@
   </div>
   <div class="panel-body">
 	  <table style="width: 100%; font-size: 16px!important;">
-		  <tr>
+<tr style="border-bottom: 1px dashed #003;">
 			  <th>Callsign</th>
+			  <th>Mode</th>
 			  <th>Tx/Rx</th>
 			  <th>Activation</th>
 			  <th>Location</th>
 		  </tr>
 {% for r in callsign.repeater %}
-		  <tr>
+<tr style="border-bottom: 1px dashed #003;">
 			  <td>{{ r.callsign }}</td>
+			  <td>{{ r.mode }}</td>
 			  <td>{{ r.tx }}MHz/{{ r.rx }}MHz</td>
-			  <td>{% if r.burst %}1750Hz Burst Tone{% elif r.carrier %}Carrier Presence{% elif r.ctcss != 0 %}{{ r.ctcss }}Hz CTCSS Tone{% else %}Something broke{% endif %}</td>
+			  <td>{% if r.burst %}1750Hz Burst Tone{% elif r.carrier %}Carrier Presence{% elif r.ctcss != 0 %}{{ r.ctcss }}Hz CTCSS Tone{% else %}Valid signal{% endif %}</td>
 			  <td>{{ r.locator }}</td>
 		  </tr>
 {% endfor %}
@@ -51,8 +53,48 @@
 {% endif %}
 
 {% if "club" in callsign.keys() %}
-<p>This is a club station.</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Club Details</h3>
+  </div>
+  <div class="panel-body">
+<h4>{{ callsign['club']['name'] }}</h4>
+<p><i>{{ callsign['club']['town'] }}</i></p>
+{% if callsign.keeper != "" %}
+<ul><li>Contact: {{ callsign.keeper }}</li></ul>
 {% endif %}
+  </div>
+</div>
+{% endif %}
+
+{% if aprs['found'] > 0 %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">APRS Details</h3>
+  </div>
+  <div class="panel-body">
+<table style="width: 100%; font-size: 16px!important;">
+<tr style="border-bottom: 1px dashed #003;">
+<th>Callsign</th>
+<th>Last Heard</th>
+<th>Location</th>
+</tr>
+{% for s in aprs['entries'] %}
+<tr>
+<td>{{ s['name'] }}</td>
+<td>{{ s['time'] }}</td>
+<td>{{ s['lat'] }}N, {{ s['lng'] }}E.</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px dashed #003;">"{{ s['comment'] }}"</td>
+</tr>
+{% endfor %}
+</table>
+  </div>
+</div>
+{% endif %}
+
+
 
         </div><!-- /.wiki-main -->                                               
                                                                                  

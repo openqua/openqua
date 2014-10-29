@@ -28,7 +28,7 @@
 #
 
 from database import Database
-import re, subprocess
+import re, subprocess, aprs
 from flask import Flask, jsonify, render_template, redirect, request
 app = Flask(__name__)
 
@@ -72,6 +72,7 @@ def add_club_detail(callsign, detail):
     detail['lon'] = float(club['lon'])
     detail['locator'] = club['locator']
     detail['town'] = club['town']
+    detail['keeper'] = club['keeper']
     return detail
 
 def get_callsign_detail(callsign):
@@ -128,7 +129,7 @@ def callsign_no_callsign():
 @app.route("/c/<callsign>")
 def callsign_detail_page(callsign):
     detail = get_callsign_detail(callsign)
-    return render_template("callsign.html", callsign = detail)
+    return render_template("callsign.html", callsign = detail, aprs = aprs.get_aprs_data(callsign))
 
 @app.route("/search")
 def callsign_search():
