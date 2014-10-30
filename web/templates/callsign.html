@@ -103,6 +103,7 @@
 <table style="width: 100%; font-size: 16px!important;">
 <tr style="border-bottom: 1px dashed #003;">
 <th>Timestamp</th>
+<th>Frequency</th>
 <th>Reporter</th>
 <th>Reporter Locator</th>
 <th>SNR</th>
@@ -113,6 +114,7 @@
 {% for s in wspr %}
 <tr style="border-bottom: 1px dashed #003;">
 <td>{{ s['timestamp'] }}</td>
+<td>{{ s['freq'] }}MHz</td>
 <td>{{ s['rptcall'] }}</td>
 <td>{{ s['rptgrid'] }}</td>
 <td>{{ s['snr'] }}</td>
