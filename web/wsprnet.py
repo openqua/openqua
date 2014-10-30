@@ -9,7 +9,7 @@ def get_wspr_data(callsign):
     query = {
             'band': 'All',
             'count': '10',
-            'call': 'K7IP',
+            'call': callsign,
             'reporter': '',
             'timelimit': '1209600',
             'sortby': 'date',
