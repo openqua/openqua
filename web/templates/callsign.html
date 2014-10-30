@@ -90,6 +90,7 @@
 </tr>
 {% endfor %}
 </table>
+<p>See more APRS activity for {{ callsign.callsign }} at <a href="http://aprs.fi/info/a/{{ aprs['entries'][0]['name'] }}">aprs.fi</a>.</p>
   </div>
 </div>
 {% endif %}
@@ -124,6 +125,7 @@
 </tr>
 {% endfor %}
 </table>
+<p>See more WSPR activity for {{ callsign.callsign }} at <a href="http://wsprnet.org/olddb?mode=html&band=all&limit=50&findcall={{ callsign.callsign }}&findreporter=&sort=date">wsprnet.org</a>.</p>
   </div>
 </div>
 {% endif %}
