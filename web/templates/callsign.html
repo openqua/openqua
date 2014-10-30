@@ -94,6 +94,37 @@
 </div>
 {% endif %}
 
+{% if wspr != [] %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">WSPR Details</h3>
+  </div>
+  <div class="panel-body">
+<table style="width: 100%; font-size: 16px!important;">
+<tr style="border-bottom: 1px dashed #003;">
+<th>Timestamp</th>
+<th>Reporter</th>
+<th>Reporter Locator</th>
+<th>SNR</th>
+<th>Drift</th>
+<th>Power</th>
+<th>Distance</th>
+</tr>
+{% for s in wspr %}
+<tr style="border-bottom: 1px dashed #003;">
+<td>{{ s['timestamp'] }}</td>
+<td>{{ s['rptcall'] }}</td>
+<td>{{ s['rptgrid'] }}</td>
+<td>{{ s['snr'] }}</td>
+<td>{{ s['drift'] }}</td>
+<td>{{ s['pwr'] }}</td>
+<td>{{ s['distance'] }}</td>
+</tr>
+{% endfor %}
+</table>
+  </div>
+</div>
+{% endif %}
 
 
         </div><!-- /.wiki-main -->                                               

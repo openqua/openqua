@@ -28,7 +28,7 @@
 #
 
 from database import Database
-import re, subprocess, aprs
+import re, subprocess, aprs, wsprnet
 from flask import Flask, jsonify, render_template, redirect, request
 app = Flask(__name__)
 
@@ -129,7 +129,7 @@ def callsign_no_callsign():
 @app.route("/c/<callsign>")
 def callsign_detail_page(callsign):
     detail = get_callsign_detail(callsign)
-    return render_template("callsign.html", callsign = detail, aprs = aprs.get_aprs_data(callsign))
+    return render_template("callsign.html", callsign = detail, aprs = aprs.get_aprs_data(callsign), wspr = wsprnet.get_wspr_data(callsign))
 
 @app.route("/search")
 def callsign_search():
